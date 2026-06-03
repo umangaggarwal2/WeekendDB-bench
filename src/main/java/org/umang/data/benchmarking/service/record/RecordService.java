@@ -41,19 +41,38 @@ public class RecordService {
     List<RuntimeState> runtimeStates =
         operationRecords.stream().map(OperationRecord::getEngineState)
             .map(EngineState::runtimeState).toList();
-    double averageReadLatency =
-        runtimeStates.stream().mapToDouble(RuntimeState::lastReadLatencyNanos).average()
-            .getAsDouble();
-    double averageWriteLatency =
-        runtimeStates.stream().mapToDouble(RuntimeState::lastWriteLatencyNanos).average()
-            .getAsDouble();
-    double averageFlushLatency =
-        runtimeStates.stream().mapToDouble(RuntimeState::lastFlushLatencyNanos).average()
-            .getAsDouble();
-    System.out.println("Read Latency " + averageReadLatency);
-    System.out.println("Write Latency " + averageWriteLatency);
-    System.out.println("Flush Latency " + averageFlushLatency);
-//    System.out.println(runtimeStates.stream().map(RuntimeState::lastWriteLatencyNanos).filter(val -> val < 0).collect(
-//        Collectors.toList()));
+    List<Long> readLatencies =
+        runtimeStates.stream().map(RuntimeState::lastReadLatencyNanos).sorted().toList();
+    List<Long> writeLatencies =
+        runtimeStates.stream().map(RuntimeState::lastWriteLatencyNanos).sorted().toList();
+    List<Long> flushLatencies =
+        runtimeStates.stream().map(RuntimeState::lastFlushLatencyNanos).sorted().toList();
+    System.out.println("Read Latency P50: " + percentile(readLatencies, 50));
+    System.out.println("Write Latency P50: " + percentile(writeLatencies, 50));
+    System.out.println("Flush Latency P50: " + percentile(flushLatencies, 50));
+
+    System.out.println("Read Latency P90: " + percentile(readLatencies, 90));
+    System.out.println("Write Latency P90: " + percentile(writeLatencies, 90));
+    System.out.println("Flush Latency P90: " + percentile(flushLatencies, 90));
+
+    System.out.println("Read Latency P95: " + percentile(readLatencies, 95));
+    System.out.println("Write Latency P95: " + percentile(writeLatencies, 95));
+    System.out.println("Flush Latency P95: " + percentile(flushLatencies, 95));
+
+    System.out.println("Read Latency P99: " + percentile(readLatencies, 99));
+    System.out.println("Write Latency P99: " + percentile(writeLatencies, 99));
+    System.out.println("Flush Latency P99: " + percentile(flushLatencies, 99));
+  }
+
+  private static long percentile(List<Long> sorted, double p) {
+    if (sorted.isEmpty()) {
+      throw new IllegalArgumentException("Empty list");
+    }
+
+    int index = (int) Math.ceil((p / 100.0) * sorted.size()) - 1;
+
+    index = Math.clamp(index, 0, sorted.size() - 1);
+
+    return sorted.get(index);
   }
 }

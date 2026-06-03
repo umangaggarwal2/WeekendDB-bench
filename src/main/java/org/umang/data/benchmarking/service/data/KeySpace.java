@@ -6,7 +6,7 @@ import java.util.random.RandomGenerator;
 
 public class KeySpace {
 
-  private final List<String> keys = new ArrayList<>(15000);
+  private final List<String> keys = new ArrayList<>(150000);
 
   public void add(String key) {
     keys.add(key);
