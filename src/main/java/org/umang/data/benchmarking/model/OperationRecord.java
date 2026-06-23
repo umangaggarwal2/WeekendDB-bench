@@ -2,7 +2,7 @@ package org.umang.data.benchmarking.model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import org.umang.data.engine.EngineState;
+import org.umang.data.pager.engine.EngineState;
 
 public final class OperationRecord {
 

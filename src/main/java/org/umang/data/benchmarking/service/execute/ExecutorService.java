@@ -1,11 +1,10 @@
 package org.umang.data.benchmarking.service.execute;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import org.umang.data.benchmarking.model.Operation;
 import org.umang.data.benchmarking.service.record.RecordService;
 import org.umang.data.benchmarking.service.workload.WorkloadService;
-import org.umang.data.engine.KeyValueStore;
+import org.umang.data.pager.engine.KeyValueStore;
 
 public class ExecutorService {
 
@@ -31,9 +30,9 @@ public class ExecutorService {
   }
 
   public void executeOperation(Operation operation) throws IOException {
-    ByteBuffer key = ByteBuffer.wrap(operation.getKey().getBytes());
+    byte[] key = operation.getKey().getBytes();
     switch (operation.getType()) {
-      case PUT -> keyValueStore.put(key, ByteBuffer.wrap(operation.getValue().getBytes()));
+      case PUT -> keyValueStore.put(key, operation.getValue().getBytes());
       case GET -> keyValueStore.get(key);
       case DELETE -> keyValueStore.delete(key);
     }

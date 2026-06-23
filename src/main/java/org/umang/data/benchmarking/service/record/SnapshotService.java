@@ -1,8 +1,8 @@
 package org.umang.data.benchmarking.service.record;
 
 import java.io.IOException;
-import org.umang.data.engine.EngineState;
-import org.umang.data.engine.StateRegistry;
+import org.umang.data.pager.engine.EngineState;
+import org.umang.data.pager.engine.StateRegistry;
 
 public class SnapshotService {
 
