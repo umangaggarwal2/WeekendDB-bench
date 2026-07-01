@@ -1,14 +1,15 @@
 package org.umang.data.benchmarking.model;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Operation {
 
   private final OperationType type;
-  private final String key;
-  private String value;
+  private final byte[] key;
+  private final byte[] value;
 
-  public Operation(OperationType type, String key, String value) {
+  public Operation(OperationType type, byte[] key, byte[] value) {
     this.type = type;
     this.key = key;
     this.value = value;
@@ -18,11 +19,11 @@ public class Operation {
     return type;
   }
 
-  public String getKey() {
+  public byte[] getKey() {
     return key;
   }
 
-  public String getValue() {
+  public byte[] getValue() {
     return value;
   }
 
@@ -33,20 +34,11 @@ public class Operation {
     }
     Operation operation = (Operation) o;
     return type == operation.type && Objects.equals(key, operation.key)
-        && Objects.equals(value, operation.value);
+        && Arrays.equals(value, operation.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, key, value);
-  }
-
-  @Override
-  public String toString() {
-    return "Operation{" +
-        "type=" + type +
-        ", key='" + key + '\'' +
-        ", value='" + value + '\'' +
-        '}';
+    return Objects.hash(type, key, Arrays.hashCode(value));
   }
 }

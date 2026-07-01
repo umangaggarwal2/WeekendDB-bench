@@ -11,7 +11,7 @@ import org.umang.data.pager.engine.StorageEngine;
 public class Main {
 
   static void main(String[] args) throws IOException {
-    int operationCount = 100000000;
+    int operationCount = 100_000_000;
     StorageEngine storageEngine = StorageEngine.open("benchmarking-pager-1");
     WorkloadService workloadService = new WorkloadService(new KeySpace());
     SnapshotService snapshotService = new SnapshotService(storageEngine);

@@ -30,9 +30,9 @@ public class ExecutorService {
   }
 
   public void executeOperation(Operation operation) throws IOException {
-    byte[] key = operation.getKey().getBytes();
+    byte[] key = operation.getKey();
     switch (operation.getType()) {
-      case PUT -> keyValueStore.put(key, operation.getValue().getBytes());
+      case PUT -> keyValueStore.put(key, operation.getValue());
       case GET -> keyValueStore.get(key);
       case DELETE -> keyValueStore.delete(key);
     }

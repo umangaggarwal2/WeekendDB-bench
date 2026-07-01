@@ -3,9 +3,8 @@ package org.umang.data.benchmarking.service.workload;
 import java.util.random.RandomGenerator;
 import org.umang.data.benchmarking.model.Operation;
 import org.umang.data.benchmarking.model.OperationType;
-import org.umang.data.benchmarking.service.data.KeyGenerator;
+import org.umang.data.benchmarking.service.data.ByteGenerator;
 import org.umang.data.benchmarking.service.data.KeySpace;
-import org.umang.data.benchmarking.service.data.ValueGenerator;
 
 public class WorkloadService {
 
@@ -53,12 +52,12 @@ public class WorkloadService {
   }
 
   private Operation putOperation() {
-    String key = putKey();
-    return new Operation(OperationType.PUT, key, ValueGenerator.INSTANCE.generateValue());
+    byte[] key = putKey();
+    return new Operation(OperationType.PUT, key, ByteGenerator.INSTANCE.generateRandomLength());
   }
 
   private Operation deleteOperation() {
-    String key = keySpace.random(random);
+    byte[] key = keySpace.random(random);
     keySpace.remove(key);
     return new Operation(OperationType.DELETE, key, null);
   }
@@ -68,12 +67,12 @@ public class WorkloadService {
    *
    * @return key strings, e.g. key-123
    */
-  private String putKey() {
+  private byte[] putKey() {
     boolean overwrite = !keySpace.isEmpty() && random.nextInt(100) < 70;
     if (overwrite) {
       return keySpace.random(random);
     }
-    String key = KeyGenerator.INSTANCE.generateKey();
+    byte[] key = ByteGenerator.INSTANCE.generate(8);
     keySpace.add(key);
     return key;
   }
